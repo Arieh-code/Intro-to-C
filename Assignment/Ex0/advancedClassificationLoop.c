@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include "NumClass.h"
 /* Function to calculate x raised to the power y */
-int power(int x, unsigned int y)
-{
-    if (y == 0)
-        return 1;
-    if (y % 2 == 0)
-        return power(x, y / 2) * power(x, y / 2);
-    return x * power(x, y / 2) * power(x, y / 2);
-}
- 
+ int power(int x, unsigned int y){
+     while(y>1){
+         x *= x;
+         y--;
+         }
+    
+     return x;
+ }
 /* Function to calculate the length of a given number */
 int order(int x)
 {
@@ -58,16 +57,10 @@ int reverse(int x){
 /* functhion that will check if a number is palindrome
 */
 int isPalindrome(int x){
-    int r, lenght;
-    lenght = order(x);
+    int r;
     r = reverse(x);
-    while(lenght){
-        if(x%10 == r%10){
-            x/= 10, r/=10;
-        }
-        else{
-            return 0;
-        }
+    if(r == x){
+        return 1;
     }
-    return 1;
+    return 0;
 }
