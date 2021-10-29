@@ -1,6 +1,6 @@
 void hello(void);
 
-void isArmstrong(void);
+int isArmstrong(int a);
 
 int isPalindrome(int a);
 
