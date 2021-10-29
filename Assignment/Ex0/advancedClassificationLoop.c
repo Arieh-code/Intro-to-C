@@ -41,3 +41,33 @@ int isArmstrong(int x)
     else
         return 0;
 }
+
+/* Functhion that will reverse a number
+*/
+int reverse(int x){
+    int temp, counter;
+    temp = 0;
+    counter = order(x); 
+    while(x!=0){
+        temp += (x%10) * power(10, counter--);
+        x/= 10;
+    }
+    return temp;
+}
+
+/* functhion that will check if a number is palindrome
+*/
+int isPalindrome(int x){
+    int r, lenght;
+    lenght = order(x);
+    r = reverse(x);
+    while(lenght){
+        if(x%10 == r%10){
+            x/= 10, r/=10;
+        }
+        else{
+            return 0;
+        }
+    }
+    return 1;
+}
