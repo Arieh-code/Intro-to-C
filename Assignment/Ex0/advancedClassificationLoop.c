@@ -2,8 +2,12 @@
 #include "NumClass.h"
 /* Function to calculate x raised to the power y */
  int power(int x, unsigned int y){
+     if(y == 0){
+         return 1;
+     }
+     int temp = x;
      while(y>1){
-         x *= x;
+         x *= temp;
          y--;
          }
     
@@ -25,7 +29,6 @@ int order(int x)
 int isArmstrong(int x)
 {
     // Calling order function
-    int x;
     int n = order(x);
     int temp = x, sum = 0;
     while (temp) {
@@ -46,7 +49,7 @@ int isArmstrong(int x)
 int reverse(int x){
     int temp, counter;
     temp = 0;
-    counter = order(x); 
+    counter = order(x)-1; 
     while(x!=0){
         temp += (x%10) * power(10, counter--);
         x/= 10;
