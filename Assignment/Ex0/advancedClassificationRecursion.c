@@ -4,13 +4,6 @@
 
 
 
-int power(int a, int b){
-    if(b == 0)
-        return 1;
-    return a * (power(a, b--));
-}
-
-
 // function to calculate the order of the number using recursion
 int order(int num){
     if(num > 0)
