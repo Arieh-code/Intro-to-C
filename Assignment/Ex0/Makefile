@@ -10,7 +10,7 @@ all: libclassloops.a libclassrec.a libclassrec.so libclassloops.so mains maindlo
 
 loops: libclassloops.a 
 
-looped: libclassloops.so
+loopd: libclassloops.so
 
 libclassloops.a: $(OBJECT_LOOP) 
 		$(AR) libclassloops.a $(OBJECT_LOOP)
