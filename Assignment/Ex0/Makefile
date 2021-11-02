@@ -6,7 +6,7 @@ OBJECT_LOOP = basicClassification.o advancedClassificationLoop.o
 OBJECT_REC = basicClassification.o advancedClassificationRecursion.o main.o
 MATH = -lm
 
-all: libclassloops.a libclassrec.a libclassrec.so libclassloops.so mains maindloop maindrec
+all: loops loopd recursives recursived mains maindloop maindrec
 
 loops: libclassloops.a 
 
@@ -31,10 +31,10 @@ libclassrec.so: $(OBJECT_REC)
 mains: $(OBJECTS_MAIN) libclassrec.a
 	$(CC) $(FLAGS) -o mains $(OBJECTS_MAIN) libclassrec.a $(MATH)
 
-maindloop: $(OBJECTS_MAIN)
+maindloop: $(OBJECTS_MAIN) loopd
 	$(CC) $(FLAGS) -o maindloop $(OBJECTS_MAIN) ./libclassloops.so $(MATH)
 
-maindrec: $(OBJECTS_MAIN)
+maindrec: $(OBJECTS_MAIN) recursived
 	$(CC) $(FLAGS) -o maindrec $(OBJECTS_MAIN) ./libclassrec.so $(MATH)
 
 
