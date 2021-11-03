@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 #include "NumClass.h"
-
+#define True 1 
+#define False 0
 
 
 // function to calculate the order of the number using recursion
@@ -38,10 +39,10 @@ int isPalindrome(int num)
      */
     if(num == reverse(num))
     {
-        return 1;
+        return True;
     }
     
-    return 0;
+    return False;
 }
 
 // the recursion function that will return a result of armstrong.
@@ -56,6 +57,6 @@ int isArmstronghelper(int num, int order)
 //the main function to check if a numer is armstrong
 int isArmstrong(int num){
     if(num == isArmstronghelper(num, order(num)))
-        return 1; 
-    return 0;
+        return True; 
+    return False;
 }

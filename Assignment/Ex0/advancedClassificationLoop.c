@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include "NumClass.h"
+#define True 1 
+#define False 0
+
 /* Function to calculate x raised to the power y */
  int power(int x, unsigned int y){
      if(y == 0){
@@ -39,9 +42,9 @@ int isArmstrong(int x)
  
     // If satisfies Armstrong condition
     if (sum == x)
-        return 1;
+        return True;
     else
-        return 0;
+        return False;
 }
 
 /* Functhion that will reverse a number
@@ -63,7 +66,7 @@ int isPalindrome(int x){
     int r;
     r = reverse(x);
     if(r == x){
-        return 1;
+        return True;
     }
-    return 0;
+    return False;
 }

@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "NumClass.h"
+#define True 1 
+#define False 0
 
 // is strong function
 int isStrong(int x){
@@ -18,10 +20,10 @@ int isStrong(int x){
         copy = copy/10;
     }
     if(sum == x){
-        return 1;
+        return True;
     }
     else{
-        return 0;
+        return False;
     }
 
 }
@@ -29,12 +31,12 @@ int isStrong(int x){
 // is prime function
 int isPrime(int num){
     if(num==1){
-        return 1;
+        return True;
     }
     for(int i=2; i<num; i++){
         if(num%i==0){
-            return 0;
+            return False;
         }
     }
-    return 1;
+    return True;
 }
