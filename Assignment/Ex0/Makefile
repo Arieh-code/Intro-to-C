@@ -6,51 +6,51 @@ OBJECT_LOOP = basicClassification.o advancedClassificationLoop.o
 OBJECT_REC = basicClassification.o advancedClassificationRecursion.o main.o
 MATH = -lm
 
-all: loops loopd recursives recursived mains maindloop maindrec
+all:loops loopd recursives recursived mains maindloop maindrec
 
-loops: libclassloops.a 
+loops:libclassloops.a 
 
-loopd: libclassloops.so
+loopd:libclassloops.so
 
-libclassloops.a: $(OBJECT_LOOP) 
+libclassloops.a:$(OBJECT_LOOP) 
 		$(AR) libclassloops.a $(OBJECT_LOOP)
 
-libclassloops.so: $(OBJECT_LOOP) 
+libclassloops.so:$(OBJECT_LOOP) 
 		$(CC) -shared -o libclassloops.so $(OBJECT_LOOP)
 
-recursives: libclassrec.a
+recursives:libclassrec.a
 
-recursived: libclassrec.so
+recursived:libclassrec.so
 
-libclassrec.a: $(OBJECT_REC) 
+libclassrec.a:$(OBJECT_REC) 
 		$(AR) libclassrec.a $(OBJECT_REC) 
 
-libclassrec.so: $(OBJECT_REC) 
+libclassrec.so:$(OBJECT_REC) 
 		$(CC) -shared -o libclassrec.so $(OBJECT_REC) 
 
-mains: $(OBJECTS_MAIN) libclassrec.a
+mains:$(OBJECTS_MAIN) libclassrec.a
 	$(CC) $(FLAGS) -o mains $(OBJECTS_MAIN) libclassrec.a $(MATH)
 
-maindloop: $(OBJECTS_MAIN) loopd
+maindloop:$(OBJECTS_MAIN) loopd
 	$(CC) $(FLAGS) -o maindloop $(OBJECTS_MAIN) ./libclassloops.so $(MATH)
 
-maindrec: $(OBJECTS_MAIN) recursived
+maindrec:$(OBJECTS_MAIN) recursived
 	$(CC) $(FLAGS) -o maindrec $(OBJECTS_MAIN) ./libclassrec.so $(MATH)
 
 
-main.o: main.c NumClass.h
+main.o:main.c NumClass.h
 		$(CC) $(FLAGS) -c main.c
 
-basicClassification.o: basicClassification.c NumClass.h
+basicClassification.o:basicClassification.c NumClass.h
 		$(CC) $(FLAGS) -c basicClassification.c
 
-advancedClassificationLoop.o: advancedClassificationLoop.c NumClass.h
+advancedClassificationLoop.o:advancedClassificationLoop.c NumClass.h
 		$(CC) $(FLAGS) -c advancedClassificationLoop.c
 
-advancedClassificationRecursion.o: advancedClassificationRecursion.c NumClass.h
+advancedClassificationRecursion.o:advancedClassificationRecursion.c NumClass.h
 		$(CC) $(FLAGS) -c advancedClassificationRecursion.c $(MATH)
 
-.PHONY: clean all
+.PHONY:clean all
 
 Clean:
 		rm -f *.o *.a *.so mains maindloop maindrec loopd recursive loops recursived
