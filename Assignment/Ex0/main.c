@@ -3,7 +3,7 @@
 #define True 1 
 #define False 0
 
-void main(void){
+int main(){
     int a, b, i;
     scanf("%d %d", &a,&b);
   
@@ -37,5 +37,6 @@ void main(void){
    } 
    
    printf("\n");
+   return 0;
 
 }
