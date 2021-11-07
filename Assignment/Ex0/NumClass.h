@@ -6,4 +6,4 @@ int isPrime(int a);
 
 int isStrong(int a); 
 
-void main();
+int main();
