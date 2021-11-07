@@ -31,10 +31,10 @@ libclassrec.so:$(OBJECT_REC)
 mains:$(OBJECTS_MAIN) libclassrec.a
 	$(CC) $(FLAGS) -o mains $(OBJECTS_MAIN) libclassrec.a $(MATH)
 
-maindloop:$(OBJECTS_MAIN) loopd
+maindloop:$(OBJECTS_MAIN) 
 	$(CC) $(FLAGS) -o maindloop $(OBJECTS_MAIN) ./libclassloops.so $(MATH)
 
-maindrec:$(OBJECTS_MAIN) recursived
+maindrec:$(OBJECTS_MAIN) 
 	$(CC) $(FLAGS) -o maindrec $(OBJECTS_MAIN) ./libclassrec.so $(MATH)
 
 
