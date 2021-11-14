@@ -57,27 +57,8 @@ void shortest_route(int mat[Max][Max]){
 the void function is used on the matrix to make the shortest routes*/
 void print_shortestpath(int mat[Max][Max], int a, int b){
     if(mat[a][b] == 0){
-        printf(False)
+        printf("%d", False);
     }
     printf("%d", mat[a][b]);
 }
 
-// int main(){
-//     int matrix[Max][Max], i, j;
-//     make_mat(matrix);
-//     for(i = 0; i<Max; i++){
-//         for(j=0; j<Max; j++){
-//             printf("%d", matrix[i][j]);
-//         }
-//     }
-//     if(exsits(matrix,0,1) == True){
-//         printf("True\n");
-
-//     }
-//     else{
-//         printf("False\n");
-//     }
-//     int x = shortest_route(matrix, 0, 1);
-//     printf("%d", x);
-//     return 0; 
-// }
