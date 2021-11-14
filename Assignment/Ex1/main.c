@@ -22,7 +22,7 @@ int main(){
             printf("False\n");
         }
     }
-    else if(input == "C"){
+    else if(input == 'C'){
         int a, b;
         scanf("%d,%d", &a,&b);
         shortest_route(matrix);
