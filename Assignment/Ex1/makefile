@@ -28,4 +28,4 @@ my_mat.o: my_mat.c my_mat.h
 .PHONY: clean all
 
 Clean:
-		rm -f *.o *.a *.so mains mats matd
+		rm -f *.o *.a *.so *.txt mains mats matd
