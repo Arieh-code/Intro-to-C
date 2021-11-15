@@ -19,12 +19,12 @@ void make_mat(int mat[Max][Max]){
 
 /* this function will check if a path exists meaning 
 if the place in the matrix doesnt equal 0*/
-int exsits(int mat[Max][Max], int a, int b){
+void exsits(int mat[Max][Max], int a, int b){
     if(mat[a][b]!= 0){
-        return True;
+        printf("True\n");
     }
     else{
-        return False;
+        printf("False\n");
     }
 }
 
@@ -57,8 +57,8 @@ void shortest_route(int mat[Max][Max]){
 the void function is used on the matrix to make the shortest routes*/
 void print_shortestpath(int mat[Max][Max], int a, int b){
     if(mat[a][b] == 0){
-        printf("%d", False);
+        printf("%d\n", False);
     }
-    printf("%d", mat[a][b]);
+    printf("%d\n", mat[a][b]);
 }
 
