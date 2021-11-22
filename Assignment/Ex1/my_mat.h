@@ -1,10 +1,9 @@
 #define Max 10
-void make_mat(int mat[Max][Max]);
 
-void exsits(int mat[Max][Max], int a, int b);
+void Make_mat();
 
-void shortest_route(int mat[Max][Max]);
+void print_shortest_route();
 
-int min(int num1, int num2);
+void shortest_route();
 
-void print_shortestpath(int mat[Max][Max], int a, int b);
+void exsits();
