@@ -45,7 +45,7 @@ int Gimatria(char c){
 }
 
 void Gematria_Sequences(char a[], char b[]){
-    int i, j;
+    int i;
     i = 0;  
     int sum = 0;
     i = 0;  
@@ -53,9 +53,9 @@ void Gematria_Sequences(char a[], char b[]){
         sum += Gimatria(a[i]);
         i++;
     } 
-    char ans[TXT] = "", *begin_ptr, *end_ptr, *ans_ptr, *helper_ptr;
+    char ans[TXT] = "", *begin_ptr, *helper_ptr;
     begin_ptr = b;
-    ans_ptr = ans;
+    // ans_ptr = ans;
     int sum_word = 0;
     i = 1;
     while(*begin_ptr){
@@ -107,6 +107,7 @@ if(!((c >=0 && c <65)||(c>90&& c<97)||(c>122&&c<=127))){
         return c = 'z'+'a'-c;
    }
  }
+ return 0; 
 }
 
 // function definition of the revstr()  
@@ -165,8 +166,8 @@ void Atbash_Sequences(char a[], char b[]){
     int len = strlen(a); 
     char ans[TXT] = "" ;
     while(*helper_ptr){
-        char helper1[TXT] = "", *helper1_ptr;
-        helper1_ptr = helper1;
+        char helper1[TXT] = "";
+        // helper1_ptr = helper1;
         strncpy(helper1,helper_ptr, len);
         if(!strcmp(helper1, a) || !strcmp(helper1, copy_word)){
             strcat(ans, helper1);
@@ -181,60 +182,87 @@ void Atbash_Sequences(char a[], char b[]){
     printf("Atbash Sequences: %s\n", ans);
 }
 
-void Anagram_Sequences(char a[], char b[]){
-    char copy_a[strlen(a)]; 
-    strcpy(copy_a, a);
-    char *a_ptr, *begb_ptr, *endb_ptr;
-    a_ptr = a, begb_ptr = b;
-    char ans[TXT] = "";
-    int counter = 0; 
-    while(*begb_ptr){
-        a_ptr = a;
-        char helper[TXT] = "";
-        if(!strlen(helper) && !Gimatria(*begb_ptr)){
-            begb_ptr++;
+int isAnagram(char* a, char* b) {
+    // b[strlen(b)-1] = '\0';
+    int checkAnagram[177] = {0};
+    for(int i = 0 ; i < strlen(a); i++){
+        if(a[i] != ' '){
+            checkAnagram[(int)*(a+i)] += 1;
         }
-        else{
-            strncat(helper, b_ptr, 1);
-            while(counter < strlen(a)){
-                char p = strchr (a,*b_ptr);
-                if(p != NULL){
-                    a_ptr = strchr(a_ptr, p);
-                    counter++;
-                    b_ptr++;
-                }
-                else{
-                    b_ptr++;
-                }
+    }
+    for(int i = 0; i < strlen(b); i++){
+        if(b[i] != ' '){
+            checkAnagram[(int)*(b+i)] -= 1;
+        }
+    }
+    for(int i = 0; i < 177; i++){
+        if(checkAnagram[i] != 0){
+            return 0;
+        }
+    }
+    return 1;
+}
+
+
+
+void Anagram_Sequences(char a[], char b[]){
+    a[strlen(a)-1] = '\0';
+    char *begb_ptr, *endb_ptr, *a_ptr;
+    begb_ptr = b; 
+    char ans[TXT] = "";
+    
+    
+    while(*begb_ptr){
+        char helper[TXT] = "";
+        int counter = 0; 
+        endb_ptr = begb_ptr;
+        a_ptr = a;
+        while(counter < strlen(a_ptr)){
+        if(*endb_ptr == 32 && !strlen(helper)){
+            break;
+        }
+        else if (*endb_ptr != 32){
+            counter ++;
+        }
+        strncat(helper, endb_ptr,1);
+        endb_ptr++;
+
+        if(strlen(a_ptr) == counter){
+            if(isAnagram(helper, a_ptr)){
+                strcat(ans, helper);
+                ans[strlen(ans)] = '~';
+                counter = 0; 
             }
         }
-    } 
+        
+        }
+        begb_ptr++;
+    }
+    ans[strlen(ans)-1] = '\0'; 
+    printf("Anagram Sequences: %s", ans);
 }
 
+ 
 
 
 
-int main(){
-    char word [WORD];
-    char text [TXT]; 
-    makeWord(word);
-    makeText(text);
-    Gematria_Sequences(word, text);
-    // char word [WORD] = "abcd";
-    // char word2[WORD] = "abcd";
-    // char text [TXT] = "a-bc,dbca-zwxyzabzyxw0dcba~";
-    // revstr(word2);
-    Atbash_Sequences(word, text);
-    // int i = 0; 
-    // while (word[i])
-    // {
-    //     word[i] = convert(word[i]);
-    //     i++;
-    // }
-    // printf("%s\n", word);
-    // // char *word_ptr;
-    // // word_ptr = word;
-    // revstr(word);
-    // printf("%s\n", word);
-    return 0; 
-}
+
+
+// int main(){
+//     char word [WORD];
+//     char text [TXT]; 
+//     char word_temp[WORD];
+//     char text_temp[TXT];
+//     makeWord(word);
+//     makeText(text);
+//     strcpy(word_temp, word);
+//     strcpy(text_temp, text);
+//     Gematria_Sequences(word_temp, text_temp);
+//     strcpy(word_temp, word);
+//     strcpy(text_temp, text);
+//     Atbash_Sequences(word_temp, text_temp);
+//     strcpy(word_temp, word);
+//     strcpy(text_temp, text);
+//     Anagram_Sequences(word_temp, text_temp);
+//     return 0; 
+// }
