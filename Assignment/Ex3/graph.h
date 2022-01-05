@@ -24,5 +24,6 @@ void deleteGraph_cmd(pnode* head);
 void shortsPath_cmd(pnode head);
 void TSP_cmd(pnode head);
 void add_edge_tonode(pnode *head, char *str);
+pnode getNode(pnode *head, int id);
 
 #endif
