@@ -8,35 +8,64 @@ void build_graph_cmd(pnode *head, char *str){
     // first clear graph if one exist
     int sizeGraph;
     sizeGraph = *str-'0';
-    for(int i = 0; i<sizeGraph; i++){
-        insert_node_cmd(head, i);
-    }
+    insert_node_cmd(head, sizeGraph);
     str++;
-    printf("%c\n", *str);
-     // n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2
+    // n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2
     add_edge_tonode(head, str);
 }
 
-void insert_node_cmd(pnode *head, int id){
-    pnode index = *head;
-    pnode src = (pnode)malloc(sizeof(node));
-    src->node_num = id;
-    src->next = NULL;
-    src->edges = NULL;
-    if(src == NULL){
+// function to get node 
+pnode getNode(pnode *head, int id) {
+    // if head is null there are no nodes
+    if(head == NULL) {
+        return NULL;
+    }
+    // create curr node
+    pnode curr = *head;
+    // go next untill found node id 
+    while(curr != NULL && curr->node_num != id) {
+        curr = curr->next;
+    }
+    // return node
+    return curr;
+}
+
+// add node to graph
+void insert_node_cmd(pnode *head, int size){
+    // if size of graph is 0 return nothing
+    if(size == 0){
+        return;
+    }
+    // temp node 
+    pnode temp = NULL;
+    // allocate memory for node
+    temp = (pnode)malloc(sizeof(node));
+    if(temp == NULL){
+        printf("No memory allocated\n");
         exit(0);
     }
-    if(index == NULL){
-        *head = src;
-    }
-    else{
-        while(index->next != NULL){
-            index = index->next;
+    // first node will always be 0
+    temp->node_num = 0;
+    temp->next = NULL;
+    *head = temp;
+    pnode curr = temp;
+    // link the rest of the nodes
+    for(int i = 1; i< size; i++){
+        pnode new = NULL;
+        new = (pnode)malloc(sizeof(node));
+        if(new == NULL){
+            printf("No memory allocated");
+            exit(0);
         }
-        index->next = src;
+
+        new->node_num = i; 
+        new->next = NULL;
+        curr->next = new;
+        curr = curr->next;
     }
 }
 
+// function to add edged to nodes
 void add_edge_tonode(pnode *head, char *str){
     // n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2 T
     while(*str != 'T'){
@@ -45,44 +74,40 @@ void add_edge_tonode(pnode *head, char *str){
         int node_id = *str - '0';
         str++;
         // 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2 T
-        int counter = 0;
-        pnode node_src = *head;
-        while(node_src->node_num != node_id){
-            node_src = node_src->next;
-        }
-        pedge edge_head = node_src->edges;
-        // 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2 T
-        while(*str != 'n' || *str != 'T'){
+        pnode node_src = getNode(head, node_id);
+        node_src->edges = NULL;
+        pedge edge_head = NULL;        
+        while(*str != 'n' && *str != 'T'){
             pedge new_edge = (pedge)malloc(sizeof(edge));
             if(new_edge == NULL){
+                printf("No memory allocated");
                 exit(0);
             }
-            pnode node_dest = *head;
-            while(node_dest->node_num!=*str-'0'){
-                node_dest = node_dest->next;
-            }
-            // addint endpoint.
-            new_edge->endpoint = node_dest;
+            new_edge->endpoint = getNode(head, *str-'0');
             str++;
             // 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2 T
-            // adding weight 
-            new_edge->weight = *str - '0';
-            // makeing next Null
+            new_edge->weight = *str-'0';
             new_edge->next = NULL;
-            // linking the new edge
-            if(edge_head == NULL){
+            if(node_src->edges == NULL){
+                node_src->edges = new_edge;
                 edge_head = new_edge;
             }
             else{
-                while(edge_head != NULL){
-                    edge_head = edge_head->next;
-                }
-                edge_head = new_edge;
+                edge_head->next = new_edge;
+                edge_head = edge_head->next;
             }
             str++;
         }
     } 
 }          
+
+
+
+
+
+
+
+
 
 
 
@@ -96,5 +121,13 @@ int main(){
     pnode *head = &temp;
     ptr++;
     build_graph_cmd(head, ptr);
+    while(temp!=NULL){
+        printf("Node num : %d\n", temp->node_num);
+        while(temp->edges!=NULL){
+            printf("Weight: %d\n", temp->edges->weight);
+            temp->edges = temp->edges->next;
+        }
+        temp = temp->next;
+    }
     return 0; 
 }
