@@ -6,6 +6,7 @@
 
 void build_graph_cmd(pnode *head, char *str){
     // first clear graph if one exist
+    // 4 n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2
     int sizeGraph;
     sizeGraph = *str-'0';
     insert_node_cmd(head, sizeGraph);
@@ -101,6 +102,114 @@ void add_edge_tonode(pnode *head, char *str){
     } 
 }          
 
+void add_new_node(pnode *head, char *str){
+    // 5 0 4 2 1 B
+    int node_id = *str -'0';
+    str++;
+    // 0 4 2 1 B
+    // flag to check if the node exists
+    int flag = 0; 
+    pnode index = *head;
+    while(index != NULL){
+        if(index->node_num == node_id){
+            flag = 1;
+            index = index->next;
+        }
+        else{
+            index = index->next;
+        }
+        
+    }
+    if(!flag){
+        pnode new = NULL;
+        new = (pnode)malloc(sizeof(node));
+        if(new == NULL){
+            printf("No memory allocated");
+            exit(0);
+        }
+        new->node_num = node_id;
+        new->next = NULL;
+        new->edges = NULL;
+        if(*head == NULL){
+            *head = new;
+        }
+        else{
+            pnode currentNode = *head;
+            while(currentNode->next != NULL){
+                currentNode = currentNode->next;
+            }
+            currentNode->next = new;
+        }
+        // 0 4 2 1
+        pedge edge_head = NULL;
+        while(*str != 'B' && *str != 'T' && *str!='A' && *str != 'S'){
+            pedge new_edge = (pedge)malloc(sizeof(edge));
+            if(new_edge == NULL){
+                printf("No memory allocated");
+                exit(0);
+            }
+            // 0 4 2 1
+            new_edge->endpoint = getNode(head, *str-'0');
+            str++;
+            // 4 2 1
+            new_edge->weight = *str-'0';
+            new_edge->next = NULL;
+            
+            if(new->edges == NULL){
+                new->edges = new_edge;
+                edge_head = new_edge;
+            }
+            else{
+                edge_head->next = new_edge;
+                edge_head = edge_head->next;
+            }
+            str++;
+
+        }
+
+    }
+    else{
+        pnode temp = getNode(head, node_id);
+        pedge curr = NULL;
+        curr = temp->edges;
+        pedge eptr = NULL;
+        while(curr != NULL){
+            eptr = curr->next;
+            free(curr);
+            curr = eptr;
+        }
+        temp->edges = NULL;
+        pedge edge_head = NULL;
+        // 0 4 2 1
+        while(*str != 'B' && *str != 'T' && *str!='A' && *str != 'S'){
+            pedge new_edge = (pedge)malloc(sizeof(edge));
+            if(new_edge == NULL){
+                printf("No memory allocated");
+                exit(0);
+            }
+            new_edge->endpoint = getNode(head, *str-'0');
+            str++;
+            new_edge->next = NULL;
+            // 4 2 1
+            new_edge->weight = *str-'0';
+            if(temp->edges == NULL){
+                temp->edges = new_edge;
+                edge_head = new_edge;
+            }
+            else{
+
+                edge_head->next = new_edge;
+                edge_head = edge_head->next;
+            }
+            str++;
+        }
+    }
+    
+}
+
+void delete_node_cmd(pnode *head, char *str){
+    
+}
 
 
 
@@ -115,19 +224,25 @@ void add_edge_tonode(pnode *head, char *str){
 
 int main(){
     // A 4 n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2
-    char input [23] = "A4n02533n20411n13702T\0", *ptr;
+    char input [30] = "A4n02533n20411n13702TB10421B\0", *ptr;
     ptr = input; 
     pnode temp = NULL;
     pnode *head = &temp;
     ptr++;
     build_graph_cmd(head, ptr);
-    while(temp!=NULL){
-        printf("Node num : %d\n", temp->node_num);
-        while(temp->edges!=NULL){
-            printf("Weight: %d\n", temp->edges->weight);
-            temp->edges = temp->edges->next;
-        }
-        temp = temp->next;
+    while(*ptr != 'B'){
+        ptr++;
     }
+    ptr++;
+    add_new_node(head, ptr);
+    while(temp!=NULL){
+    printf("Node num : %d\n", temp->node_num);
+    while(temp->edges!=NULL){
+        printf("Weight: %d\n", temp->edges->weight);
+        temp->edges = temp->edges->next;
+    }
+    temp = temp->next;
+}
+    
     return 0; 
 }
