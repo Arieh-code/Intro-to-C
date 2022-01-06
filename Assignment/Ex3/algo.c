@@ -142,7 +142,7 @@ void add_new_node(pnode *head, char *str){
         }
         // 0 4 2 1
         pedge edge_head = NULL;
-        while(*str != 'B' && *str != 'T' && *str!='A' && *str != 'S'){
+        while(*str != 'B' && *str != 'T' && *str!='A' && *str != 'S' && *str != 'D'){
             pedge new_edge = (pedge)malloc(sizeof(edge));
             if(new_edge == NULL){
                 printf("No memory allocated");
@@ -181,7 +181,7 @@ void add_new_node(pnode *head, char *str){
         temp->edges = NULL;
         pedge edge_head = NULL;
         // 0 4 2 1
-        while(*str != 'B' && *str != 'T' && *str!='A' && *str != 'S'){
+        while(*str != 'B' && *str != 'T' && *str!='A' && *str != 'S' && *str != 'D'){
             pedge new_edge = (pedge)malloc(sizeof(edge));
             if(new_edge == NULL){
                 printf("No memory allocated");
@@ -207,8 +207,69 @@ void add_new_node(pnode *head, char *str){
     
 }
 
-void delete_node_cmd(pnode *head, char *str){
-    
+void delete_node_cmd(pnode *head, int id){
+    // if head is null return nothing
+    if(*head == NULL){
+        return;
+    }
+    // find the node we want to remove
+    pnode remove_Node = getNode(head, id);
+    // pointer helper
+    pnode Node_temp = NULL;
+    // if the head is the node we are delteing then head and pointing the next one to be head
+    if((*head) == remove_Node){
+        Node_temp = (*head)->next;
+        *head = Node_temp;
+    }
+    else{
+        // node isn't the head
+        pnode index = *head;
+        // find the node and remove it from the linked list
+        while(index->next != NULL){
+            if(index->next->node_num == id){
+                if(index->next->next == NULL){
+                    index->next = NULL;
+                    break;
+                }
+                else{
+                    index->next = index->next->next;
+                }
+            }
+            index = index->next;
+        }
+    }
+    // this stage is the deleting the edged stage and at the end removing the node
+    pnode currN = *head;
+    pedge currE = NULL;
+    pedge tempE = NULL;
+    while(currN != NULL){
+        if(currN->edges != NULL){
+            if(currN->edges->endpoint == remove_Node){
+                tempE = currN->edges->next;
+            }
+            else{
+                currE = currN->edges;
+                while(currE->next != NULL){
+                    if(currE->next->endpoint == remove_Node){
+                        tempE = currE->next->next;
+                        free(currE->next);
+                        currE->next = tempE;
+                        break;
+                    }
+                    currE = currE->next;
+                }
+            }
+        }
+        currN = currN->next;
+    }
+    currE = remove_Node->edges;
+    tempE = NULL;
+    while(currE != NULL){
+        tempE = currE->next;
+        free(currE);
+        currE = tempE;
+    }
+    free(remove_Node);
 }
 
 
@@ -224,7 +285,7 @@ void delete_node_cmd(pnode *head, char *str){
 
 int main(){
     // A 4 n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2
-    char input [30] = "A4n02533n20411n13702TB10421B\0", *ptr;
+    char input [33] = "A4n02533n20411n13702n3TB10421D3\0", *ptr;
     ptr = input; 
     pnode temp = NULL;
     pnode *head = &temp;
@@ -235,14 +296,14 @@ int main(){
     }
     ptr++;
     add_new_node(head, ptr);
+    delete_node_cmd(head, 2);
     while(temp!=NULL){
-    printf("Node num : %d\n", temp->node_num);
-    while(temp->edges!=NULL){
-        printf("Weight: %d\n", temp->edges->weight);
-        temp->edges = temp->edges->next;
+        printf("Node num : %d\n", temp->node_num);
+        while(temp->edges!=NULL){
+            printf("Weight: %d\n", temp->edges->weight);
+            temp->edges = temp->edges->next;
+        }
+        temp = temp->next;
     }
-    temp = temp->next;
-}
-    
     return 0; 
 }
