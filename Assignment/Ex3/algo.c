@@ -455,38 +455,38 @@ void deleteGraph_cmd(pnode* head) {
 
 
 
-
-
-int main(){
-    // A 4 n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2
-    char input [33] = "A4n02533n20411n13702n3TB10421D3\0", *ptr;
-    ptr = input; 
-    pnode temp = NULL;
-    pnode *head = &temp;
-    ptr++;
-    build_graph_cmd(head, ptr);
-    while(*ptr != 'B'){
-        ptr++;
-    }
-    ptr++;
-    // add_new_node(head, ptr);
-    // delete_node_cmd(head, 2);
-    // while(temp!=NULL){
-    //     printf("Node num : %d\n", temp->node_num);
-    //     while(temp->edges!=NULL){
-    //         printf("Weight: %d\n", temp->edges->weight);
-    //         temp->edges = temp->edges->next;
-    //     }
-    //     temp = temp->next;
-    // }
-    // char input1[3] = "20\0";
-    // char *ptr1;
-    // ptr1 = input1;
-    // int s = shortsPath_cmd(temp, ptr1);
-    // printf("%d", s);
-    char input1[5] = {"3213"};
-    char *ptr1;
-    ptr1 = input1;
-    TSP_cmd(temp, ptr1);
-    return 0; 
-}
+// int main(){
+//     char input[51] = "A4n02533n20411n13702n3T3213B50421T42135B62314T3136";
+//     char *ptr_final = input;
+//     pnode temp = NULL;
+//     pnode *head = &temp;
+//     printf("%s\n", ptr_final);
+//     while(*ptr_final){
+//         if(*ptr_final == 'A'){
+//             ptr_final++;
+//             build_graph_cmd(head, ptr_final);
+//         }
+//         else if(*ptr_final == 'B'){
+//             ptr_final++;
+//             add_new_node(head, ptr_final);
+//         }
+//         else if(*ptr_final == 'D'){
+//             ptr_final++;
+//             delete_node_cmd(head, *ptr_final-'0');
+//         }
+//         else if(*ptr_final == 'S'){
+//             ptr_final++;
+//             int sp = shortsPath_cmd(temp, ptr_final);
+//             printf("Dijsktra shortest path: %d\n", sp);
+//         }
+//         else if(*ptr_final == 'T'){
+//             ptr_final++;
+//             TSP_cmd(temp, ptr_final);
+//         }
+//         else{
+//             ptr_final++;
+//         }
+//     }
+//     printf("i am here\n");
+//     return 0; 
+// }
