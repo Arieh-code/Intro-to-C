@@ -2,6 +2,7 @@
 #include "graph.h"
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 
 void build_graph_cmd(pnode *head, char *str){
@@ -272,6 +273,151 @@ void delete_node_cmd(pnode *head, int id){
     free(remove_Node);
 }
 
+// function to find shortest path, using Dijkstra algorithm
+int shortsPath_cmd(pnode head, char *str){
+    // getting the two src_id that we are looking for
+    int src = *str - '0';
+    str++;
+    int dest = *str - '0'; 
+    pnode curr = head;
+    // number of nodes counter
+    int number_ofNodes = 0; 
+    while(curr != NULL){
+        if(curr->node_num != src){
+            curr->shortest_time = INT_MAX;
+        }
+        else{
+            curr->shortest_time = 0;
+        }
+        curr->explored = 0;
+        number_ofNodes++;
+        curr = curr->next;
+    }
+    pnode src_node = head;
+    // find the src node that i start from
+    while(src_node->node_num != src ){
+        src_node = src_node->next;
+    }
+    // mark node as explored 
+    src_node->explored = 1; 
+    pedge edge_head = src_node->edges;
+    // if edged from first node are none, there are no directions from there. return max int
+    if(edge_head == NULL){
+        return INT_MAX;
+    }
+    // loop till all nodes are visited
+    int node_count = 0; 
+    while(node_count < number_ofNodes){
+        int min = INT_MAX;
+        int next_node_id = 0;
+        while(edge_head != NULL){
+            if(edge_head->weight <= edge_head->endpoint->shortest_time){
+                edge_head->endpoint->shortest_time = edge_head->weight + src_node->shortest_time;
+                if(edge_head->endpoint->shortest_time <= min && edge_head->endpoint->explored == 0){
+                    min = edge_head->endpoint->shortest_time;
+                    next_node_id = edge_head->endpoint->node_num;
+                }
+            }
+            edge_head = edge_head->next;
+        }
+        src_node = head;
+        while(src_node->node_num != next_node_id){
+            src_node = src_node->next;
+        }
+        edge_head = src_node->edges;
+        node_count++;
+    }
+    // find the node we are travelling to
+    pnode final = head;
+    while(final->node_num != dest){
+        final = final->next;
+    }
+    // return the node shortest time 
+    return final->shortest_time;
+}
+
+
+void TSP_cmd(pnode head, char *str){
+    // minimum wiehgt
+   int min_weight = INT_MAX;
+   // get the size of the list of cities
+   int size = *str - '0';
+   // array of the route
+   int route [size];
+   for(int i = 0; i<size; i++){
+       str++;
+       route[i] = *str -'0';
+   }
+   // permute the options of visiting the cities
+   // this is where i found the information https://www.codesdope.com/blog/article/generating-permutations-of-all-elements-of-an-arra/
+   permute(route, 0, size-1, &min_weight, size, head);
+   if (min_weight == INT_MAX){
+        printf("TSP shortest path: -1 \n");
+    }
+    else{
+        printf("TSP shortest path: %d \n", min_weight);
+    }
+}
+
+// function to swap 
+void swap(int *a, int *b)
+{
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// function to permute taken from this site https://www.codesdope.com/blog/article/generating-permutations-of-all-elements-of-an-arra/
+void permute(int *route, int start, int end, int *min_weight, int size, pnode head)
+{
+    int i;
+    if (start == end){
+        int tmpWeight = minPath(route, size, head);
+        if(tmpWeight < *min_weight){
+            *min_weight = tmpWeight;
+        }
+    }
+    else
+    {
+        for (i = start; i <= end; i++){
+            swap((route+start), (route+i));
+            permute(route, start+1, end, min_weight, size, head);
+            swap((route+start), (route+i));
+        }
+    }
+}
+
+// for each permutation use shortest path to find the travel time
+int minPath(int* route, int size, pnode head){
+    // if size is 0 return 0
+    if (size <=1 ){
+        return 0;
+    }
+    else{
+        // else call shortest path on the two following nodes
+        int sum = 0;
+        for (int i = 0; i < size-1; i++)
+        {   
+            char str[3] = {route[i]+'0',route[i+1]+'0'};
+            char *ptr; 
+            ptr = str;
+            int dij = shortsPath_cmd(head, ptr);
+            if (dij == INT_MAX){
+                return INT_MAX;
+            }
+            else{
+                sum += dij;
+            }
+        }
+        return sum;
+    }
+}
+
+
+
+
+
 
 
 
@@ -295,15 +441,24 @@ int main(){
         ptr++;
     }
     ptr++;
-    add_new_node(head, ptr);
-    delete_node_cmd(head, 2);
-    while(temp!=NULL){
-        printf("Node num : %d\n", temp->node_num);
-        while(temp->edges!=NULL){
-            printf("Weight: %d\n", temp->edges->weight);
-            temp->edges = temp->edges->next;
-        }
-        temp = temp->next;
-    }
+    // add_new_node(head, ptr);
+    // delete_node_cmd(head, 2);
+    // while(temp!=NULL){
+    //     printf("Node num : %d\n", temp->node_num);
+    //     while(temp->edges!=NULL){
+    //         printf("Weight: %d\n", temp->edges->weight);
+    //         temp->edges = temp->edges->next;
+    //     }
+    //     temp = temp->next;
+    // }
+    // char input1[3] = "20\0";
+    // char *ptr1;
+    // ptr1 = input1;
+    // int s = shortsPath_cmd(temp, ptr1);
+    // printf("%d", s);
+    char input1[5] = {"3213"};
+    char *ptr1;
+    ptr1 = input1;
+    TSP_cmd(temp, ptr1);
     return 0; 
 }
