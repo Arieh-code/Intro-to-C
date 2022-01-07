@@ -6,8 +6,6 @@
 
 
 void build_graph_cmd(pnode *head, char *str){
-    // first clear graph if one exist
-    deleteGraph_cmd(head);
     // 4 n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2
     int sizeGraph;
     sizeGraph = *str-'0';
@@ -209,6 +207,7 @@ void add_new_node(pnode *head, char *str){
     
 }
 
+
 void delete_node_cmd(pnode *head, int id){
     // if head is null return nothing
     if(*head == NULL){
@@ -228,17 +227,11 @@ void delete_node_cmd(pnode *head, int id){
         pnode index = *head;
         // find the node and remove it from the linked list
         while(index->next != NULL){
-            if(index->next->node_num == id){
-                if(index->next->next == NULL){
-                    index->next = NULL;
-                    break;
-                }
-                else{
-                    index->next = index->next->next;
-                }
+            if(index->next == remove_Node){
+                index->next = index->next->next;
             }
-            index = index->next;
-        }
+             index = index->next;
+            }
     }
     // this stage is the deleting the edged stage and at the end removing the node
     pnode currN = *head;
@@ -248,6 +241,8 @@ void delete_node_cmd(pnode *head, int id){
         if(currN->edges != NULL){
             if(currN->edges->endpoint == remove_Node){
                 tempE = currN->edges->next;
+                free(currN->edges);
+                currN->edges = tempE;
             }
             else{
                 currE = currN->edges;
@@ -264,6 +259,7 @@ void delete_node_cmd(pnode *head, int id){
         }
         currN = currN->next;
     }
+    // remove the final edge
     currE = remove_Node->edges;
     tempE = NULL;
     while(currE != NULL){
@@ -271,8 +267,11 @@ void delete_node_cmd(pnode *head, int id){
         free(currE);
         currE = tempE;
     }
+    // finally remove node
     free(remove_Node);
 }
+
+
 
 // function to find shortest path, using Dijkstra algorithm
 int shortsPath_cmd(pnode head, char *str){

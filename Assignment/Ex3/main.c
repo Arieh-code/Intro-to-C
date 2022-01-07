@@ -47,6 +47,9 @@ int main(void)
     while(*ptrf_helper){
         if(*ptrf_helper == 'A'){
             ptrf_helper++;
+            // first clear graph if one exist
+            deleteGraph_cmd(head);
+            temp = NULL;
             build_graph_cmd(head, ptrf_helper);
         }
         else if(*ptrf_helper == 'B'){
