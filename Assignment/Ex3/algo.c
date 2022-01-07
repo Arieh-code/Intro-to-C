@@ -7,6 +7,7 @@
 
 void build_graph_cmd(pnode *head, char *str){
     // first clear graph if one exist
+    deleteGraph_cmd(head);
     // 4 n 0 2 5 3 3 n 2 0 4 1 1 n 1 3 7 0 2
     int sizeGraph;
     sizeGraph = *str-'0';
@@ -412,6 +413,33 @@ int minPath(int* route, int size, pnode head){
         }
         return sum;
     }
+}
+
+// function to delete graph
+void deleteGraph_cmd(pnode* head) {
+    if(*head == NULL){
+        return;
+    }
+
+    pnode currentNode = *head;
+    pnode nextNode;
+
+    while (currentNode != NULL) {
+        pedge currentEdge = NULL;
+        currentEdge = currentNode->edges;
+        pedge nextEdge = NULL;
+        
+        while(currentEdge != NULL) {
+            nextEdge = currentEdge->next;
+            free(currentEdge);
+            currentEdge = nextEdge;
+        }
+        
+        nextNode = currentNode->next;
+        free(currentNode);
+        currentNode = nextNode;
+    }
+    head = NULL;
 }
 
 
