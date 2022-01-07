@@ -66,6 +66,7 @@ int main(void)
             ptr_final++;
         }
     }
+    deleteGraph_cmd(head);
     // free(ptr_final);
     return 0; 
 }
